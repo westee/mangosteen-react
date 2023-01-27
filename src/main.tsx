@@ -1,17 +1,41 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import ErrorPage from './components/ErrorPage'
+import { NavLink, Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import RedirectToWelcome from './components/RedirectToWelcome'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <div>Hello world!</div>,
-    errorElement: <ErrorPage></ErrorPage>
-  }, {
-    path: '/1',
-    element: <div>1</div>,
-    errorElement: <ErrorPage></ErrorPage>
+    element: <Outlet></Outlet>,
+    errorElement: <RedirectToWelcome></RedirectToWelcome>,
+    children: [
+      {
+        index: true,
+        element: <div>index</div>,
+      }, {
+        path: 'welcome/',
+        element: <Outlet />,
+        children: [
+          {
+            path: '1',
+            element: <div>1 <NavLink to="/welcome/2">下一页</NavLink>   </div>,
+          },
+          {
+            path: '2',
+            element: <div>1 <NavLink to="/welcome/3">下一页</NavLink>   </div>,
+          },
+          {
+            path: '3',
+            element: <div>1 <NavLink to="/welcome/4">下一页</NavLink>   </div>,
+          },
+          {
+            path: '4',
+            element: <div>1 <NavLink to="/xxx">下一页</NavLink>   </div>,
+          }
+        ]
+
+      },
+    ],
   },
 ])
 

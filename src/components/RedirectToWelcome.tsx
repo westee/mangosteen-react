@@ -6,4 +6,5 @@ export default function ErrorPage() {
   useEffect(() => {
     nav('welcome/1')
   })
+  return null
 }
