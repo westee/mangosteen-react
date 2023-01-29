@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import RedirectToWelcome from '../components/RedirectToWelcome'
+import NotFundPage from '../pages/NotFundPage'
 import { MainLayout } from '../layouts/MainLayout'
 import { welcomeRoutes } from './welcomeRoutes'
 
@@ -7,7 +7,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    errorElement: <RedirectToWelcome />,
+    errorElement: <NotFundPage />,
     children: [
       welcomeRoutes
     ],
