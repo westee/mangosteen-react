@@ -23,12 +23,12 @@ export const WelcomeLayout: React.FC = () => {
         config: {duration: 300}
     })
 
-    return (<div>
-        <header>
-            <img src={logo} alt=""/>
-            <h1>山竹记账</h1>
+    return (<div h-screen flex flex-col align-center bg="#8f4cd7" pb-16px>
+        <header p-t-66px flex flex-col items-center>
+            <img w-64px src={logo} alt=""/>
+            <h1 text={"#d4d4ee"}>山竹记账</h1>
         </header>
-        <main>
+        <main shrink-1 grow-1 bg-white m-16px rounded-8px flex justify-center items-center>
             {
                 transitions((style, pathname) => (
                     <animated.div
@@ -40,9 +40,9 @@ export const WelcomeLayout: React.FC = () => {
             }
         </main>
 
-        <footer>
-             <Link to={routeReflect[location.pathname]}>下一页</Link>
-             <Link to={'/'}>跳过</Link>
+        <footer shrink-0 text-center text-24px text-white grid grid-cols-3 grid-rows-1>
+             <Link style={{ gridArea: '1 / 2 / 2 / 3' }} to={routeReflect[location.pathname]}>下一页</Link>
+             <Link style={{ gridArea: '1 / 3 / 2 / 4' }} to={'/'}>跳过</Link>
         </footer>
     </div>)
 }
