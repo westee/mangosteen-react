@@ -1,7 +1,9 @@
-import { Link, useLocation, useOutlet } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { animated, useTransition } from '@react-spring/web'
 import type { ReactNode } from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useSwipe } from '../hooks/useSwipe'
+
 import logo from '../assets/images/mangosteen.svg'
 
 const routeReflect: Record<string, string> = {
@@ -12,11 +14,12 @@ const routeReflect: Record<string, string> = {
 }
 
 export const WelcomeLayout: React.FC = () => {
+  const animating = useRef(false)
   const map = useRef<Record<string, ReactNode>>({})
   const location = useLocation()
   const outlet = useOutlet()
   map.current[location.pathname] = outlet
-  const [extraStyle, setExtraStyle] = useState<{ position: 'realative' | 'absolute' }>({ position: 'relative' })
+  const [extraStyle, setExtraStyle] = useState<{ position: 'relative' | 'absolute' }>({ position: 'relative' })
   const transitions = useTransition(location.pathname, {
     from: { transform: location.pathname === '/welcome/1' ? 'translateX(0%)' : 'translateX(100%)' },
     enter: { transform: 'translateX(0%)' },
@@ -25,17 +28,29 @@ export const WelcomeLayout: React.FC = () => {
       setExtraStyle({ position: 'absolute' })
     },
     onRest: () => {
+      animating.current = false
       setExtraStyle({ position: 'relative' })
     },
-    config: { duration: 3000 },
+    config: { duration: 300 },
   })
+  const main = useRef<HTMLElement>(null)
+  const { direction } = useSwipe(main, { onTouchStart: e => e.preventDefault() })
+  const nav = useNavigate()
+  useEffect(() => {
+    if (direction === 'left') {
+      if (animating.current)
+        return
+      animating.current = true
+      nav(routeReflect[location.pathname])
+    }
+  }, [direction, location.pathname, routeReflect])
 
   return (<div h-screen flex flex-col align-center bg="#8f4cd7" pb-16px>
         <header p-t-66px flex flex-col items-center>
             <img w-64px src={logo} alt=""/>
             <h1 text={'#d4d4ee'}>山竹记账</h1>
         </header>
-        <main shrink-1 grow-1 relative>
+        <main shrink-1 grow-1 relative ref={main}>
             {
                 transitions((style, pathname) => (
                     <animated.div w="100%" h="100%" grow-1 p-16px flex
