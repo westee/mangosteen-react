@@ -3,7 +3,7 @@ import { animated, useTransition } from '@react-spring/web'
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSwipe } from '../hooks/useSwipe'
-
+import { useLocalStore } from '../stores/useLocalStore'
 import logo from '../assets/images/mangosteen.svg'
 
 const routeReflect: Record<string, string> = {
@@ -44,8 +44,9 @@ export const WelcomeLayout: React.FC = () => {
       nav(routeReflect[location.pathname])
     }
   }, [direction, location.pathname, routeReflect])
+  const { setHasReadWelcomes } = useLocalStore()
   const onSkip = () => {
-    localStorage.setItem('isDisplayWelcome', 'yes')
+    setHasReadWelcomes(true)
   }
   return (<div h-screen flex flex-col align-center bg="#8f4cd7" pb-16px>
         <header p-t-66px flex flex-col items-center>
