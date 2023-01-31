@@ -44,7 +44,9 @@ export const WelcomeLayout: React.FC = () => {
       nav(routeReflect[location.pathname])
     }
   }, [direction, location.pathname, routeReflect])
-
+  const onSkip = () => {
+    localStorage.setItem('isDisplayWelcome', 'yes')
+  }
   return (<div h-screen flex flex-col align-center bg="#8f4cd7" pb-16px>
         <header p-t-66px flex flex-col items-center>
             <img w-64px src={logo} alt=""/>
@@ -64,7 +66,7 @@ export const WelcomeLayout: React.FC = () => {
 
         <footer shrink-0 text-center text-24px text-white grid grid-cols-3 grid-rows-1>
              <Link style={{ gridArea: '1 / 2 / 2 / 3' }} to={routeReflect[location.pathname]}>下一页</Link>
-             <Link style={{ gridArea: '1 / 3 / 2 / 4' }} to={'/'}>跳过</Link>
+             <Link style={{ gridArea: '1 / 3 / 2 / 4' }} to={'/home'} onClick={onSkip}>跳过</Link>
         </footer>
     </div>)
 }
